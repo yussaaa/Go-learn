@@ -28,6 +28,10 @@ const (
 	Sunday    = 6
 )
 
+// func weekend(day int) bool {
+// 	return day >= 5
+// }
+
 // User roles
 const (
 	Admin      = 10
@@ -47,7 +51,22 @@ func accessDenied() {
 
 func main() {
 	// The day and role. Change these to check your work.
-	today, role := Tuesday, Guest
+	today, role := Wednesday, Guest
 
-	accessGranted()
+	//* Access at any time: Admin, Manager
+	if role == Admin || role == Manager {
+		accessGranted()
+	} else if today > 4 && role == Contractor { //* Access weekends: Contractor
+		accessGranted()
+	} else if today <= 4 && role == Member {
+		accessGranted()
+	} else if (today == 0 || today == 2 || today == 4) && role == Guest {
+		accessGranted()
+	} else {
+		accessDenied()
+	}
+
+	//* Access weekdays: Member
+	//* Access Mondays, Wednesdays, and Fridays: Guest
+
 }
