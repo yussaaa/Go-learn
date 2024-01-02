@@ -29,6 +29,62 @@ const (
 	Retired     = 3
 )
 
+func displayServerInfo(servers map[string]int) {
+	statuses := make(map[string]int)
+
+	serverNum := len(servers)
+	fmt.Println("Number of servers:", serverNum)
+
+	for _, status := range servers {
+		// if status == Online {
+		// 	statuses["Online"]++
+		// } else if status == Offline {
+		// 	statuses["Offline"]++
+		// } else if status == Maintenance {
+		// 	statuses["Maintenance"]++
+		// } else if status == Retired {
+		// 	statuses["Retired"]++
+		// } else {
+		// 	fmt.Println("Wrong status code!")
+
+		switch status {
+		case Online:
+			statuses["Online"]++
+		case Offline:
+			statuses["Offline"]++
+		case Maintenance:
+			statuses["Maintenance"]++
+		case Retired:
+			statuses["Retired"]++
+		default:
+			{
+				fmt.Println("Wrong status code!")
+			}
+		}
+	}
+	fmt.Println("Number of servers for each status:\n   ", statuses)
+}
+
 func main() {
 	servers := []string{"darkstar", "aiur", "omicron", "w359", "baseline"}
+
+	serverMap := make(map[string]int)
+	for _, server := range servers {
+		serverMap[server] = Online
+	}
+	displayServerInfo(serverMap)
+
+	serverMap["darkstar"] = Retired
+	serverMap["aiur"] = Offline
+	displayServerInfo(serverMap)
+
+	for _, server := range servers {
+		serverMap[server] = Offline
+	}
+	displayServerInfo(serverMap)
+
+	for _, server := range servers {
+		serverMap[server] = Maintenance
+	}
+	displayServerInfo(serverMap)
 }
