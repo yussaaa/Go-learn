@@ -21,6 +21,62 @@ package main
 
 import "fmt"
 
+const (
+	SmallLift = iota
+	StandardLift
+	LargeLift
+)
+
+type Lift int
+
+type Director interface {
+	Direct() Lift
+}
+
+type Motorcycle string
+type Car string
+type Truck string
+
+func (m Motorcycle) Direct() Lift {
+	// fmt.Println("Go to small lift")
+	return SmallLift
+}
+
+func (c Car) Direct() Lift {
+	// fmt.Println("Go to standard lift")
+	return StandardLift
+}
+
+func (t Truck) Direct() Lift {
+	// fmt.Println("Go to large lift")
+	return LargeLift
+}
+
+func (t Truck) String() string {
+	return fmt.Sprintf("Truck: %v", string(t))
+}
+
+func directVehicles(vehicles []Director) {
+	fmt.Println("Directing vehicles")
+
+	for i := 0; i < len(vehicles); i++ {
+		vehicle := vehicles[i]
+		fmt.Printf("-- Directing vehicle %s --\n", vehicle)
+		switch vehicle.Direct() {
+		case SmallLift:
+			fmt.Println("Go to small lift")
+		case StandardLift:
+			fmt.Println("Go to standard lift")
+		case LargeLift:
+			fmt.Printf("%v Go to large lift", vehicle)
+		}
+		fmt.Println("")
+	}
+}
+
 func main() {
+	vehicles := []Director{Motorcycle("Motorcycle"), Car("Car"), Truck("Tesla-Truck")}
+
+	directVehicles(vehicles)
 
 }
