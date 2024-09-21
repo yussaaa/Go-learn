@@ -37,7 +37,29 @@ func makeJobs() []Job {
 	return jobs
 }
 
+func runJob(resultChan chan int, j Job) {
+	resultChan <- longCalculation(j)
+
+}
+
 func main() {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	jobs := makeJobs()
+
+	resultChan := make(chan int, 100)
+	for _, j := range jobs {
+		go runJob(resultChan, j)
+	}
+	resultCount := 0
+	sum := 0
+	for {
+		result := <-resultChan
+		sum += result
+		resultCount += 1
+		// Have to check if all the jobs are done, otherwise the program will hang because the main thread is waiting for the result
+		if resultCount == len(jobs) {
+			break
+		}
+	}
+	fmt.Printf("Sum of all jobs: %d\n", sum)
 }
